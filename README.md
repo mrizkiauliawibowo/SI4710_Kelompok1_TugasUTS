@@ -22,9 +22,19 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan 
 food_delivery_system/
 ├── frontend/                      # Frontend web application
 │   ├── index.html                # Halaman utama
+│   ├── restaurant.html           # Halaman restaurant
+│   ├── cart.html                 # Halaman keranjang
+│   ├── checkout.html             # Halaman checkout
+│   ├── order-tracking.html       # Halaman tracking order
+│   ├── admin.html                # Halaman admin
 │   └── js/                       # JavaScript modules
 │       ├── main.js               # Main JavaScript file
-│       └── home.js               # Home page logic
+│       ├── home.js               # Home page logic
+│       ├── restaurant.js         # Restaurant page logic
+│       ├── cart.js               # Cart page logic
+│       ├── checkout.js           # Checkout page logic
+│       ├── order-tracking.js     # Order tracking logic
+│       └── admin.js              # Admin page logic
 │
 ├── microservices/                # Backend microservices
 │   ├── api-gateway/              # 🚀 API Gateway (Port 5000)
@@ -290,6 +300,19 @@ Jika ada masalah:
 3. Pastikan virtual environment aktif
 4. Lihat logs di folder `logs/`
 5. Konsultasi dengan tim lain jika perlu integrasi
+
+---
+
+## 🎨 **FRONTEND PAGES**
+
+Sistem frontend sudah dilengkapi dengan halaman-halaman lengkap:
+
+- **Home Page** (`/`) - Landing page dengan restaurant list
+- **Restaurant Page** (`/restaurant`) - Detail restaurant & menu
+- **Cart Page** (`/cart`) - Keranjang belanja
+- **Checkout Page** (`/checkout`) - Proses pembayaran
+- **Order Tracking** (`/order-tracking`) - Tracking status order
+- **Admin Panel** (`/admin`) - Panel administrasi
 
 ---
 
