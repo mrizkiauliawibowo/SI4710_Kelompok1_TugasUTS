@@ -6,13 +6,60 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python.
 
 ```
 food_delivery_system/
-├── microservices/
-│   ├── api-gateway/          # API Gateway untuk routing request
-│   └── service-template/     # Template untuk membuat service baru
-├── scripts/
-│   ├── setup.sh             # Script untuk setup environment
-│   └── run-all.sh           # Script untuk menjalankan semua service
-└── README.md
+├── frontend/                      # Frontend web application
+│   ├── index.html                # Halaman utama
+│   └── js/                       # JavaScript modules
+│       ├── main.js               # Main JavaScript file
+│       └── home.js               # Home page logic
+│
+├── microservices/                # Backend microservices
+│   ├── api-gateway/              # 🚀 API Gateway (Port 5000)
+│   │   ├── app.py                # Flask app untuk routing
+│   │   ├── requirements.txt      # Dependencies
+│   │   └── run.sh               # Run script
+│   │
+│   ├── service-template/         # 📋 Template untuk service baru
+│   │   ├── app.py                # Template Flask app
+│   │   ├── requirements.txt      # Dependencies
+│   │   ├── run.sh               # Run script
+│   │   └── README.md            # Template documentation
+│   │
+│   ├── user-service/             # 👤 ARTHUR (5001)
+│   │   ├── app.py                # User management & auth
+│   │   ├── requirements.txt      # Dependencies
+│   │   └── run.sh               # Run script
+│   │
+│   ├── restaurant-service/       # 🍽️ rizki (5002)
+│   │   ├── app.py                # Restaurant & menu management
+│   │   ├── requirements.txt      # Dependencies
+│   │   └── run.sh               # Run script
+│   │
+│   ├── order-service/            # 📦 Nadia (5003)
+│   │   ├── app.py                # Order management
+│   │   ├── requirements.txt      # Dependencies
+│   │   └── run.sh               # Run script
+│   │
+│   ├── delivery-service/         # 🚚 aydin (5004)
+│   │   ├── app.py                # Delivery tracking
+│   │   ├── requirements.txt      # Dependencies
+│   │   └── run.sh               # Run script
+│   │
+│   └── payment-service/          # 💳 reza (5005)
+│       ├── app.py                # Payment processing
+│       ├── requirements.txt      # Dependencies
+│       └── run.sh               # Run script
+│
+├── scripts/                      # Utility scripts
+│   ├── setup.sh                 # 🛠️ Setup environment
+│   └── run-all.sh               # 🚀 Start all services
+│
+├── logs/                        # Log files (auto-generated)
+│   ├── gateway.log             # API Gateway logs
+│   └── service-*.log           # Individual service logs
+│
+├── .gitignore                   # Git ignore file
+└── README.md                    # 📖 This file
+```
 ```
 
 ## Services
