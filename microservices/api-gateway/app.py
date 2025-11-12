@@ -67,8 +67,8 @@ def home():
     """
 
 if __name__ == '__main__':
-    print("🚀 API Gateway starting on port 5000")
-    print("📡 Available services:")
+    print(" API Gateway starting on port 5000")
+    print(" Available services:")
     for service, url in SERVICES.items():
         print(f"   - {service}: {url}")
     app.run(host='0.0.0.0', port=5000, debug=True)

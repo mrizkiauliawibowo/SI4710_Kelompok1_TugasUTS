@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # ========================
-# ❗ GANTI MODEL INI SESUAI SERVICE ANDA
+#  GANTI MODEL INI SESUAI SERVICE ANDA
 # ========================
 class ExampleModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +27,7 @@ class ExampleModel(db.Model):
 def create_tables():
     with app.app_context():
         db.create_all()
-        print("✅ Database tables created")
+        print(" Database tables created")
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -69,7 +69,7 @@ def get_one(id):
 
 if __name__ == '__main__':
     create_tables()
-    # ⚠️ UBAH PORT INI SESUAI SERVICE ANDA:
+    #  UBAH PORT INI SESUAI SERVICE ANDA:
     PORT = 5000  # ARTHUR:5001, rizki:5002, Nadia:5003, aydin:5004, reza:5005
-    print(f"🚀 Service starting on port {PORT}")
+    print(f" Service starting on port {PORT}")
     app.run(host='0.0.0.0', port=PORT, debug=True)

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "🍕 Food Delivery System - Setup"
+echo " Food Delivery System - Setup"
 echo "===================================="
 
 # Create virtual environment
@@ -23,10 +23,10 @@ chmod +x microservices/*/run.sh
 mkdir -p logs
 
 echo ""
-echo "✅ Setup completed!"
+echo " Setup completed!"
 echo ""
-echo "🚀 Next steps:"
+echo " Next steps:"
 echo "   ./scripts/run-all.sh    - Start all services"
 echo "   ./scripts/stop-all.sh   - Stop all services"
 echo ""
-echo "🌐 Access: http://localhost:5000"
+echo " Access: http://localhost:5000"
