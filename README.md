@@ -6,13 +6,14 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan 
 
 ## 🎯 **TEAM ASSIGNMENTS**
 
-| Nama | Port | Service | Jurusan | 
-|------|------|---------|---------|
+| Nama | Port | Service |
+|------|------|----------|
 | **ARTHUR** | 5001 | User Service |
 | **rizki** | 5002 | Restaurant Service | 
 | **Nadia** | 5003 | Order Service |
 | **aydin** | 5004 | Delivery Service | 
-| **reza** | 5005 | Payment Service | 
+| **reza** | 5005 | Payment Service |
+
 
 ---
 
