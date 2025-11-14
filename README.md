@@ -20,7 +20,8 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan 
 
 ```
 food_delivery_system/
-├── docs/                        
+├── docs/
+│                       
 ├── frontend/                      # Frontend web application
 │   ├── index.html                # Halaman utama
 │   ├── restaurant.html           # Halaman restaurant
@@ -37,6 +38,13 @@ food_delivery_system/
 │       ├── order-tracking.js     # Order tracking logic
 │       └── admin.js              # Admin page logic
 │
+├── instance/
+│   ├── delivery_service.db
+│   ├── order_service.db
+│   ├── payment_service.db
+│   ├── restaurant_service.db
+│   ├── user_service.db
+│   
 ├── microservices/                # Backend microservices
 │   ├── api-gateway/              # 🚀 API Gateway (Port 5000)
 │   │   ├── app.py                # Flask app untuk routing
