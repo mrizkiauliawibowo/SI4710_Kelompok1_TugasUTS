@@ -1,4 +1,4 @@
-# 🍕 Food Delivery System - Kelompok 01
+# 🍕 Food Delivery System - Kelompok 01 - SI4710
 
 Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan arsitektur modern yang memungkinkan setiap anggota tim mengembangkan service secara independen.
 
@@ -6,13 +6,13 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan 
 
 ## 🎯 **TEAM ASSIGNMENTS**
 
-| Nama | Port | Service | Jurusan | 
-|------|------|---------|---------|
-| **ARTHUR** | 5001 | User Service | Informatics |
-| **rizki** | 5002 | Restaurant Service | Informatics |
-| **Nadia** | 5003 | Order Service | Informatics |
-| **aydin** | 5004 | Delivery Service | Informatics |
-| **reza** | 5005 | Payment Service | Informatics |
+| Nama | Port | Service | 
+|------|------|---------|
+| **Arthur Budi Maharesi** | 5001 | User Service |
+| **M.Rizki Aulia Wibowo** | 5002 | Restaurant Service |
+| **Nadia Miranda** | 5003 | Order Service |
+| **Muhammad Aydin Yusuf** | 5004 | Delivery Service |
+| **Akchmad Reza Zandri** | 5005 | Payment Service |
 
 ---
 
@@ -20,6 +20,7 @@ Sistem food delivery berbasis microservices menggunakan Flask dan Python dengan 
 
 ```
 food_delivery_system/
+├── docs/                        
 ├── frontend/                      # Frontend web application
 │   ├── index.html                # Halaman utama
 │   ├── restaurant.html           # Halaman restaurant
@@ -78,8 +79,6 @@ food_delivery_system/
 │   └── run-all.sh               # 🚀 Start all services
 │
 ├── logs/                        # Log files (auto-generated)
-│   ├── gateway.log             # API Gateway logs
-│   └── service-*.log           # Individual service logs
 │
 ├── .gitignore                   # Git ignore file
 └── README.md                    # 📖 This file
@@ -112,7 +111,7 @@ chmod +x scripts/setup.sh
 
 ## 👥 **PANDUAN UNTUK SETIAP ANGGOTA TIM**
 
-### 🔵 **ARTHUR (5001) - User Service**
+### 🔵 **Arthur (5001) - User Service**
 ```bash
 # Buka terminal baru, jalankan:
 cd microservices/user-service
@@ -130,7 +129,7 @@ python app.py
 
 ---
 
-### 🟢 **rizki (5002) - Restaurant Service**
+### 🟢 **Rizki (5002) - Restaurant Service**
 ```bash
 # Buka terminal baru, jalankan:
 cd microservices/restaurant-service
@@ -166,7 +165,7 @@ python app.py
 
 ---
 
-### 🟠 **aydin (5004) - Delivery Service**
+### 🟠 **Aydin (5004) - Delivery Service**
 ```bash
 # Buka terminal baru, jalankan:
 cd microservices/delivery-service
@@ -184,7 +183,7 @@ python app.py
 
 ---
 
-### 🔴 **reza (5005) - Payment Service**
+### 🔴 **Reza (5005) - Payment Service**
 ```bash
 # Buka terminal baru, jalankan:
 cd microservices/payment-service
@@ -208,11 +207,11 @@ python app.py
 |---------|-----|-------------|
 | **Frontend** | http://localhost:5000 | Web Interface |
 | **API Gateway** | http://localhost:5000/health | Health Check |
-| **User Service** | http://localhost:5001 | ARTHUR |
-| **Restaurant Service** | http://localhost:5002 | rizki |
+| **User Service** | http://localhost:5001 | Arthur |
+| **Restaurant Service** | http://localhost:5002 | Rizki |
 | **Order Service** | http://localhost:5003 | Nadia |
-| **Delivery Service** | http://localhost:5004 | aydin |
-| **Payment Service** | http://localhost:5005 | reza |
+| **Delivery Service** | http://localhost:5004 | Aydin |
+| **Payment Service** | http://localhost:5005 | Reza |
 
 ---
 
@@ -220,11 +219,11 @@ python app.py
 
 API Gateway akan me-route request berdasarkan URL pattern:
 
-- `GET/POST /users/*` → User Service (ARTHUR)
-- `GET/POST /restaurants/*` → Restaurant Service (rizki)  
+- `GET/POST /users/*` → User Service (Arthur)
+- `GET/POST /restaurants/*` → Restaurant Service (Rizki)  
 - `GET/POST /orders/*` → Order Service (Nadia)
-- `GET/POST /deliveries/*` → Delivery Service (aydin)
-- `GET/POST /payments/*` → Payment Service (reza)
+- `GET/POST /deliveries/*` → Delivery Service (Aydin)
+- `GET/POST /payments/*` → Payment Service (Reza)
 
 ---
 
@@ -291,28 +290,6 @@ done
 ```
 
 ---
-
-## 📞 **SUPPORT**
-
-Jika ada masalah:
-1. Pastikan semua dependencies terinstall
-2. Cek apakah port sudah digunakan
-3. Pastikan virtual environment aktif
-4. Lihat logs di folder `logs/`
-5. Konsultasi dengan tim lain jika perlu integrasi
-
----
-
-## 🎨 **FRONTEND PAGES**
-
-Sistem frontend sudah dilengkapi dengan halaman-halaman lengkap:
-
-- **Home Page** (`/`) - Landing page dengan restaurant list
-- **Restaurant Page** (`/restaurant`) - Detail restaurant & menu
-- **Cart Page** (`/cart`) - Keranjang belanja
-- **Checkout Page** (`/checkout`) - Proses pembayaran
-- **Order Tracking** (`/order-tracking`) - Tracking status order
-- **Admin Panel** (`/admin`) - Panel administrasi
 
 ---
 
