@@ -45,7 +45,7 @@ async function loadUserData() {
     try {
         console.log("👤 Loading user data...");
         // Load user data untuk pre-fill form
-        const userResponse = await apiCall('users/api/users/1'); // Sample user ID 1
+        const userResponse = await apiCall('api/user-service/api/users/1'); // Sample user ID 1
         console.log("User response:", userResponse);
         
         if (userResponse.success) {
@@ -171,7 +171,7 @@ async function createOrder(userId, restaurantId, items, deliveryAddress) {
 
         // 1. Create Order
         console.log("1. Creating order...");
-        const orderResponse = await apiCall('orders/api/orders', {
+        const orderResponse = await apiCall('api/order-service/api/orders', {
             method: 'POST',
             body: JSON.stringify(orderData)
         });
@@ -183,7 +183,7 @@ async function createOrder(userId, restaurantId, items, deliveryAddress) {
 
         // 2. Create Delivery
         console.log("2. Creating delivery...");
-        const deliveryResponse = await apiCall('deliveries/api/deliveries', {
+        const deliveryResponse = await apiCall('api/delivery-service/api/deliveries', {
             method: 'POST',
             body: JSON.stringify({
                 order_id: orderResponse.data.id,
@@ -198,7 +198,7 @@ async function createOrder(userId, restaurantId, items, deliveryAddress) {
 
         // 3. Create Payment
         console.log("3. Creating payment...");
-        const paymentResponse = await apiCall('payments/api/payments', {
+        const paymentResponse = await apiCall('api/payment-service/api/payments', {
             method: 'POST',
             body: JSON.stringify({
                 order_id: orderResponse.data.id,
@@ -214,7 +214,7 @@ async function createOrder(userId, restaurantId, items, deliveryAddress) {
 
         // 4. Process Payment
         console.log("4. Processing payment...");
-        const processResponse = await apiCall(`payments/api/payments/${paymentResponse.data.id}/process`, {
+        const processResponse = await apiCall(`api/payment-service/api/payments/${paymentResponse.data.id}/process`, {
             method: 'POST'
         });
         console.log("Payment process response:", processResponse);

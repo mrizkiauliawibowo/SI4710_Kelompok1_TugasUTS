@@ -18,7 +18,7 @@ async function loadSingleOrder(orderId) {
         showMessage(`Memuat pesanan #${orderId}...`, 'info');
         
         // Try to get specific order
-        const orderResponse = await apiCall(`orders/api/orders/${orderId}`);
+        const orderResponse = await apiCall(`api/order-service/api/orders/${orderId}`);
         
         if (orderResponse.success) {
             displaySingleOrder(orderResponse.data);
@@ -54,8 +54,8 @@ async function loadOrderTrackingData() {
         
         // ✅ PANGGIL 2 SERVICES: orders + deliveries
         const [ordersResponse, deliveriesResponse] = await Promise.all([
-            apiCall('orders/api/orders'),      // Service: orders (Nadia)
-            apiCall('deliveries/api/deliveries') // Service: deliveries (aydin)
+            apiCall('api/order-service/api/orders'),      // Service: orders (Nadia)
+            apiCall('api/delivery-service/api/deliveries') // Service: deliveries (aydin)
         ]);
 
         console.log("✅ Successfully called 2 services through API Gateway");

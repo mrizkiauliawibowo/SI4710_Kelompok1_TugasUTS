@@ -19,8 +19,8 @@ async function loadRestaurantData(restaurantId) {
         
         // ✅ PANGGIL 2 SERVICES: restaurants + orders
         const [restaurantResponse, ordersResponse] = await Promise.all([
-            apiCall(`restaurants/api/restaurants/${restaurantId}`), // Service: restaurants (rizki)
-            apiCall('orders/api/orders')                           // Service: orders (Nadia)
+            apiCall(`api/restaurant-service/api/restaurants/${restaurantId}`), // Service: restaurants (rizki)
+            apiCall('api/order-service/api/orders')                           // Service: orders (Nadia)
         ]);
 
         console.log("✅ Successfully called 2 services through API Gateway");

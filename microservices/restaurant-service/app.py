@@ -119,19 +119,20 @@ def get_restaurants():
     """READ ALL - Get all restaurants"""
     try:
         include_deleted = request.args.get('include_deleted', 'false').lower() == 'true'
-        
+
         if include_deleted:
             restaurants = Restaurant.query.all()
         else:
             restaurants = Restaurant.query.filter_by(deleted_at=None).all()
-            
-        return jsonify({
+
+        # Return dict directly - Flask will auto-convert to JSON
+        return {
             "success": True,
             "data": [r.to_dict() for r in restaurants],
             "count": len(restaurants)
-        })
+        }, 200
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        return {"success": False, "error": str(e)}, 500
 
 @app.route('/api/restaurants/<int:id>', methods=['GET'])
 def get_restaurant(id):
@@ -608,4 +609,4 @@ if __name__ == '__main__':
     print(f"     DELETE /api/menu-items/bulk-delete - Bulk soft delete")
     print(f"     POST /api/menu-items/bulk-restore  - Bulk restore")
     print(f"     POST /api/menu-items/filter        - Advanced filtering")
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(host='127.0.0.1', port=PORT, debug=True)

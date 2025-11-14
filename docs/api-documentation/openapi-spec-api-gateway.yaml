@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Food Delivery System API Gateway
+  description: |
+    API Gateway untuk Food Delivery System Microservices dengan JWT Authentication
+    
+    ## Features
+    - JWT Authentication dengan demo users
+    - Service proxy ke 5 microservices
+    - CORS support untuk frontend
+    - Comprehensive error handling
+    - Health check endpoints
+    - Swagger UI documentation
+    
+    ## Demo Credentials
+    - **Admin**: username: `admin`, password: `admin123`
+    - **User**: username: `user`, password: `user123`
+    
+    ## Authentication
+    Semua protected endpoints memerlukan Bearer token yang obtained via `/auth/login`
+  version: 1.0.0
+  contact:
+    name: Kelompok 01
+    email: food.delivery@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5000
+    description: Development server
+  - url: https://api.fooddelivery.com
+    description: Production server
+
+security:
+  - BearerAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [System]
+      summary: Health Check
+      description: Check API Gateway health status
+      responses:
+        '200':
+          description: API Gateway is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /services:
+    get:
+      tags: [System]
+      summary: List Services
+      description: List all available microservices dengan status
+      responses:
+        '200':
+          description: Services list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicesResponse'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Login User
+      description: Login user dan dapatkan JWT access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register User
+      description: Register user baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Invalid request data or username already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/verify:
+    get:
+      tags: [Authentication]
+      summary: Verify Token
+      description: Verify JWT token dan get user info
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '401':
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/user-service/{path}:
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+          example: api/users
+    get:
+      tags: [User Service]
+      summary: Proxy GET requests to User Service
+      description: Forward GET requests to User Service (Port 5001)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success response from User Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: User Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/restaurant-service/{path}:
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+          example: api/restaurants
+    get:
+      tags: [Restaurant Service]
+      summary: Proxy GET requests to Restaurant Service
+      description: Forward GET requests to Restaurant Service (Port 5002)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success response from Restaurant Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+
+  /api/order-service/{path}:
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+          example: api/orders
+    get:
+      tags: [Order Service]
+      summary: Proxy GET requests to Order Service
+      description: Forward GET requests to Order Service (Port 5003)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success response from Order Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+
+  /api/delivery-service/{path}:
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+          example: api/deliveries
+    get:
+      tags: [Delivery Service]
+      summary: Proxy GET requests to Delivery Service
+      description: Forward GET requests to Delivery Service (Port 5004)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success response from Delivery Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+
+  /api/payment-service/{path}:
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+          example: api/payments
+    get:
+      tags: [Payment Service]
+      summary: Proxy GET requests to Payment Service
+      description: Forward GET requests to Payment Service (Port 5005)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success response from Payment Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer token obtained from /auth/login
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: healthy
+        service:
+          type: string
+          example: api-gateway
+        timestamp:
+          type: string
+          format: date-time
+          example: 2024-11-12T16:00:00Z
+        services:
+          type: array
+          items:
+            type: string
+          example: ["user-service", "restaurant-service", "order-service", "delivery-service", "payment-service"]
+        version:
+          type: string
+          example: 1.0.0
+
+    ServicesResponse:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceStatus'
+
+    ServiceStatus:
+      type: object
+      properties:
+        name:
+          type: string
+          example: user-service
+        url:
+          type: string
+          example: http://localhost:5001
+        status:
+          type: string
+          enum: [healthy, unhealthy, unknown]
+          example: healthy
+
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin123
+
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/UserInfo'
+        message:
+          type: string
+          example: Login successful
+
+    RegisterRequest:
+      type: object
+      required: [username, password, email]
+      properties:
+        username:
+          type: string
+          example: newuser
+        password:
+          type: string
+          example: password123
+        email:
+          type: string
+          format: email
+          example: newuser@example.com
+
+    RegisterResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: User registered successfully
+
+    VerifyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        user:
+          $ref: '#/components/schemas/UserInfo'
+
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: admin
+        email:
+          type: string
+          example: admin@fooddelivery.com
+        role:
+          type: string
+          enum: [admin, user]
+          example: admin
+
+    ServiceResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+        message:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: Service not found
+        message:
+          type: string
+          example: The requested service is not available
+
+tags:
+  - name: System
+    description: System endpoints untuk monitoring dan health check
+  - name: Authentication
+    description: JWT authentication endpoints
+  - name: User Service
+    description: User management service (Port 5001) - ARTHUR
+  - name: Restaurant Service
+    description: Restaurant management service (Port 5002) - rizki
+  - name: Order Service
+    description: Order management service (Port 5003) - Nadia
+  - name: Delivery Service
+    description: Delivery management service (Port 5004) - aydin
+  - name: Payment Service
+    description: Payment management service (Port 5005) - reza
+
+externalDocs:
+  description: Complete documentation
+  url: https://github.com/aturrr62/kelompok01_food_delivery_system

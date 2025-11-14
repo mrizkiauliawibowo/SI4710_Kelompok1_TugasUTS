@@ -14,10 +14,10 @@ async function loadAdminDashboard() {
             deliveriesResponse,
             healthResponse
         ] = await Promise.all([
-            apiCall('users/api/users'),
-            apiCall('restaurants/api/restaurants'),
-            apiCall('orders/api/orders'),
-            apiCall('deliveries/api/deliveries'),
+            apiCall('api/user-service/api/users'),
+            apiCall('api/restaurant-service/api/restaurants'),
+            apiCall('api/order-service/api/orders'),
+            apiCall('api/delivery-service/api/deliveries'),
             apiCall('health')
         ]);
 

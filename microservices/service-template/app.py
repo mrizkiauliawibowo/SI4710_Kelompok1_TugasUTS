@@ -41,6 +41,28 @@ def create_tables():
 # ENHANCED CRUD OPERATIONS
 # ========================
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "service": "Example Service Template",
+        "version": "1.0.0",
+        "description": "Microservice template untuk Food Delivery System",
+        "endpoints": {
+            "health": "/health",
+            "api": "/api/examples",
+            "create": "POST /api/examples",
+            "read_all": "GET /api/examples",
+            "read_one": "GET /api/examples/<id>",
+            "update": "PUT /api/examples/<id>",
+            "patch": "PATCH /api/examples/<id>",
+            "soft_delete": "DELETE /api/examples/<id>/soft-delete",
+            "hard_delete": "DELETE /api/examples/<id>",
+            "restore": "POST /api/examples/<id>/restore",
+            "bulk_delete": "DELETE /api/examples/bulk-delete",
+            "bulk_restore": "POST /api/examples/bulk-restore"
+        }
+    })
+
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({
@@ -319,7 +341,7 @@ def bulk_restore():
 if __name__ == '__main__':
     create_tables()
     #  UBAH PORT INI SESUAI SERVICE ANDA:
-    PORT = 5000  # ARTHUR:5001, rizki:5002, Nadia:5003, aydin:5004, reza:5005
+    PORT = 5001  # ARTHUR:5001, rizki:5002, Nadia:5003, aydin:5004, reza:5005
     print(f" Service starting on port {PORT}")
     print(f" Available endpoints:")
     print(f"   GET    /api/examples              - Read all")

@@ -1,0 +1,653 @@
+{
+  "info": {
+    "name": "Food Delivery System - Complete Testing Collection",
+    "description": "Postman Collection lengkap untuk testing Food Delivery System dengan 5 microservices (User, Restaurant, Order, Delivery, Payment)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 1. SETUP - Login & Authentication",
+      "description": "Setup authentication tokens sebelum testing services lain",
+      "item": [
+        {
+          "name": "✅ Health Check - API Gateway",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "🔓 POST - Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.access_token) {",
+                  "        pm.environment.set('admin_token', jsonData.access_token);",
+                  "        pm.test('✅ Admin token berhasil di-set', function() {",
+                  "            pm.expect(pm.environment.get('admin_token')).to.exist;",
+                  "        });",
+                  "    }",
+                  "} else {",
+                  "    pm.test('❌ Login gagal', function() {",
+                  "        pm.expect(pm.response.code).to.equal(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "🔓 POST - Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.access_token) {",
+                  "        pm.environment.set('user_token', jsonData.access_token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"user\", \"password\": \"user123\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👤 2. USER SERVICE (ARTHUR - Port 5001)",
+      "description": "Endpoint untuk manage user",
+      "item": [
+        {
+          "name": "✅ Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5001/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "➕ POST - Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('user_id', jsonData.data.id);",
+                  "        pm.test('✅ User berhasil dibuat dengan ID: ' + jsonData.data.id, function() {",
+                  "            pm.expect(jsonData.success).to.be.true;",
+                  "        });",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"testuser_{{$randomInt}}\", \"email\": \"test{{$randomInt}}@example.com\", \"password\": \"test123\", \"full_name\": \"Test User\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "🔍 GET - User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5001/api/users/{{user_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "✏️ PUT - Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"testuser_updated\", \"email\": \"test_updated@example.com\", \"full_name\": \"Test User Updated\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/users/{{user_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "🗑️ DELETE - Soft Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:5001/api/users/{{user_id}}/soft-delete",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users", "{{user_id}}", "soft-delete"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🍽️ 3. RESTAURANT SERVICE (Rizki - Port 5002)",
+      "description": "Endpoint untuk manage restaurant & menu",
+      "item": [
+        {
+          "name": "✅ Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5002/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Restaurants",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5002/api/restaurants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "restaurants"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "➕ POST - Create Restaurant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('restaurant_id', jsonData.data.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Resto Nikmat\", \"description\": \"Restaurant dengan masakan Indonesia terbaik\", \"address\": \"Jl. Sudirman No. 123\", \"phone\": \"021-1234567\", \"email\": \"info@restonikmat.com\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5002/api/restaurants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5002",
+              "path": ["api", "restaurants"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 4. ORDER SERVICE (Nadia - Port 5003)",
+      "description": "Endpoint untuk manage order",
+      "item": [
+        {
+          "name": "✅ Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5003/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5003/api/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "orders"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "➕ POST - Create Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('order_id', jsonData.data.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_id\": 1, \"restaurant_id\": 1, \"items\": [{\"menu_item_id\": 1, \"menu_item_name\": \"Nasi Goreng\", \"quantity\": 1, \"unit_price\": 25000}], \"delivery_address\": \"Jl. Sudirman No. 123\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5003/api/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5003",
+              "path": ["api", "orders"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🚚 5. DELIVERY SERVICE (Aydin - Port 5004)",
+      "description": "Endpoint untuk manage delivery & courier",
+      "item": [
+        {
+          "name": "✅ Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5004/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Deliveries",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5004/api/deliveries",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "deliveries"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Couriers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5004/api/couriers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "couriers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "➕ POST - Create Delivery",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('delivery_id', jsonData.data.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"order_id\": 1, \"pickup_address\": \"Jl. Merdeka No. 123\", \"delivery_address\": \"Jl. Sudirman No. 456\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5004/api/deliveries",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5004",
+              "path": ["api", "deliveries"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💳 6. PAYMENT SERVICE (Reza - Port 5005)",
+      "description": "Endpoint untuk manage payment",
+      "item": [
+        {
+          "name": "✅ Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5005/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "📋 GET - All Payments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5005/api/payments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "payments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "➕ POST - Create Payment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set('payment_id', jsonData.data.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"order_id\": 1, \"user_id\": 1, \"amount\": 50000, \"payment_method\": \"credit_card\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5005/api/payments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5005",
+              "path": ["api", "payments"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "⚠️ 7. ERROR HANDLING TESTS",
+      "description": "Test untuk error handling & validation",
+      "item": [
+        {
+          "name": "❌ GET - Invalid Endpoint",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/invalid-endpoint-testing",
+              "host": ["{{base_url}}"],
+              "path": ["invalid-endpoint-testing"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "❌ POST - Missing Required Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"empty\": \"body\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "❌ GET - Non-existent Resource",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5001/api/users/99999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5001",
+              "path": ["api", "users", "99999"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "restaurant_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "delivery_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "payment_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

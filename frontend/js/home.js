@@ -10,8 +10,8 @@ async function loadHomepageData() {
         
         // ✅ PANGGIL 2 SERVICES BERBEDA melalui API Gateway
         const [restaurantsResponse, userResponse] = await Promise.all([
-            apiCall('restaurants/api/restaurants'),  // Service: restaurants (rizki)
-            apiCall('users/api/users/1')             // Service: users (ARTHUR)
+            apiCall('api/restaurant-service/api/restaurants'),  // Service: restaurants (rizki)
+            apiCall('api/user-service/api/users/1')             // Service: users (ARTHUR)
         ]);
 
         console.log("✅ Successfully called 2 services through API Gateway");
